@@ -1,0 +1,11 @@
+<div *ngIf="result as r">
+  <h2>Sonuç</h2>
+  <p>Doğru: {{ r.correctCount }} / {{ r.total }}</p>
+  <h3>Skor: {{ r.score }}</h3>
+
+  <a routerLink="/quizzes">Quize geri dön</a>
+</div>
+<div *ngIf="!result">
+  <p>Sonuç verisi bulunamadı.</p>
+  <a routerLink="/quizzes">Geri dön</a>
+</div>

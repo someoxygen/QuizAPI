@@ -1,0 +1,25 @@
+<div *ngIf="loading()">Yükleniyor...</div>
+
+<div *ngIf="quiz() as q">
+  <h2>{{ q.title }}</h2>
+
+  <ng-container *ngIf="currentQuestion() as cq; else done">
+    <div class="question">
+      <h4>Soru {{ idx()+1 }} / {{ q.questions?.length }}</h4>
+      <p>{{ cq.text }}</p>
+
+      <ul>
+        <li *ngFor="let opt of cq.options" (click)="choose(opt.id)"
+            [class.selected]="selectedOptionId() === opt.id">
+          {{ opt.text }}
+        </li>
+      </ul>
+
+      <button (click)="next()">{{ idx()+1 < (q.questions?.length || 0) ? 'Sonraki' : 'Bitir' }}</button>
+    </div>
+  </ng-container>
+
+  <ng-template #done>
+    <p>Test tamamlandı, gönderiliyor…</p>
+  </ng-template>
+</div>

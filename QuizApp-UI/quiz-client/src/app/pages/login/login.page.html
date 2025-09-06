@@ -1,0 +1,15 @@
+<div class="login">
+  <h2>QuizApp Login</h2>
+
+  <form (ngSubmit)="submit()">
+    <label>Kullanıcı Adı</label>
+    <input [(ngModel)]="username" name="username" required />
+
+    <label>Şifre</label>
+    <input [(ngModel)]="password" type="password" name="password" required />
+
+    <button [disabled]="loading()">Giriş Yap</button>
+
+    <p class="error" *ngIf="error()">{{ error() }}</p>
+  </form>
+</div>

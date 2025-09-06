@@ -1,0 +1,11 @@
+<div class="list">
+  <h2>Quizzes</h2>
+
+  <div *ngIf="loading()">Yükleniyor...</div>
+  <ul *ngIf="quizzes() as list">
+    <li *ngFor="let q of list">
+      <span>{{ q.title }}</span>
+      <button (click)="play(q)">Başla</button>
+    </li>
+  </ul>
+</div>
