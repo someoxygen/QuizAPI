@@ -1,0 +1,32 @@
+<mat-card class="register-card">
+  <h2>Create an account ✨</h2>
+  <p class="subtitle">Join and start your first quiz</p>
+
+  <form #f="ngForm" (ngSubmit)="submit(f)">
+    <mat-form-field appearance="outline" class="full">
+      <mat-label>Username</mat-label>
+      <input matInput name="username" [(ngModel)]="username" required minlength="3" />
+      <mat-icon matSuffix>person_add</mat-icon>
+    </mat-form-field>
+
+    <mat-form-field appearance="outline" class="full">
+      <mat-label>Password</mat-label>
+      <input matInput [type]="hide1 ? 'password' : 'text'" name="password" [(ngModel)]="password" required minlength="6" />
+      <button mat-icon-button matSuffix type="button" (click)="hide1 = !hide1">
+        <mat-icon>{{ hide1 ? 'visibility_off' : 'visibility' }}</mat-icon>
+      </button>
+    </mat-form-field>
+
+    <mat-form-field appearance="outline" class="full">
+      <mat-label>Confirm Password</mat-label>
+      <input matInput [type]="hide2 ? 'password' : 'text'" name="confirm" [(ngModel)]="confirm" required minlength="6" />
+      <button mat-icon-button matSuffix type="button" (click)="hide2 = !hide2">
+        <mat-icon>{{ hide2 ? 'visibility_off' : 'visibility' }}</mat-icon>
+      </button>
+    </mat-form-field>
+
+    <button mat-raised-button color="primary" class="full" [disabled]="loading()">Create Account</button>
+    <mat-progress-bar *ngIf="loading()" mode="indeterminate"></mat-progress-bar>
+    <div class="error" *ngIf="error()">{{ error() }}</div>
+  </form>
+</mat-card>

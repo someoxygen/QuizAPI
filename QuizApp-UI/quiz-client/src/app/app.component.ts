@@ -13,13 +13,15 @@ import { MatButtonModule } from '@angular/material/button';
   imports: [RouterOutlet, CommonModule, RouterLink, MatToolbarModule, MatButtonModule],
   template: `
     <mat-toolbar color="primary" class="toolbar">
-      <a routerLink="/quizzes" class="brand">QuizApp</a>
-      <span class="spacer"></span>
-      <a mat-button routerLink="/quizzes">Quizzes</a>
-      <button *ngIf="auth.isAuthenticated()" mat-raised-button color="accent" (click)="logout()">
-        Logout
-      </button>
-      <a *ngIf="!auth.isAuthenticated()" mat-stroked-button color="accent" routerLink="/login">Login</a>
+    <a routerLink="/quizzes" class="brand">QuizApp</a>
+    <span class="spacer"></span>
+
+    <a mat-button routerLink="/quizzes" *ngIf="auth.isAuthenticated()">Quizzes</a>
+
+    <a *ngIf="!auth.isAuthenticated()" mat-stroked-button color="accent" routerLink="/login">Login</a>
+    <a *ngIf="!auth.isAuthenticated()" mat-flat-button color="accent" routerLink="/register" style="margin-left:8px;">Register</a>
+
+    <button *ngIf="auth.isAuthenticated()" mat-raised-button color="accent" (click)="logout()" style="margin-left:8px;">Logout</button>
     </mat-toolbar>
 
     <div class="container">

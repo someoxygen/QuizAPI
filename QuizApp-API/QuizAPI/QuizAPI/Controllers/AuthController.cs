@@ -1,11 +1,10 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using QuizApi.Data;
 using QuizApi.DTOs;
 using QuizApi.Models;
 using QuizApi.Services;
-using QuizApi.Utils;
 
 namespace QuizApi.Controllers;
 
@@ -14,50 +13,64 @@ namespace QuizApi.Controllers;
 public class AuthController : ControllerBase
 {
     private readonly AppDbContext _db;
-    private readonly ITokenService _tokens;
+    private readonly IPasswordHasher<User> _hasher;
+    private readonly ITokenService _token;
 
-    public AuthController(AppDbContext db, ITokenService tokens)
+    public AuthController(AppDbContext db, IPasswordHasher<User> hasher, ITokenService token)
     {
         _db = db;
-        _tokens = tokens;
+        _hasher = hasher;
+        _token = token;
     }
 
     [HttpPost("register")]
-    [AllowAnonymous]
     public async Task<ActionResult<AuthResponse>> Register([FromBody] RegisterRequest req)
     {
-        if (!ModelState.IsValid) return BadRequest(ModelState);
+        if (string.IsNullOrWhiteSpace(req.Email) || string.IsNullOrWhiteSpace(req.Password))
+            return BadRequest(new { message = "Email and password are required." });
 
-        var exists = await _db.Users.AnyAsync(u => u.Email == req.Email);
-        if (exists) return Conflict("Email zaten kayıtlı.");
+        var email = req.Email.Trim().ToLowerInvariant();
+
+        var exists = await _db.Users.AnyAsync(x => x.Email == email);
+        if (exists) return Conflict(new { message = "Email already exists." });
 
         var user = new User
         {
-            Email = req.Email.Trim().ToLowerInvariant(),
-            FullName = req.FullName,
-            PasswordHash = PasswordHasher.Hash(req.Password),
-            Role = req.Role
+            Email = email,
+            FullName = req.FullName?.Trim(),
+            Role = UserRole.Student, // default
+            IsActive = true
         };
+
+        user.PasswordHash = _hasher.HashPassword(user, req.Password);
+
         _db.Users.Add(user);
         await _db.SaveChangesAsync();
 
-        var token = _tokens.CreateToken(user);
-        return Ok(new AuthResponse(token, user.Id, user.Email, user.Role));
+        var token = _token.CreateToken(user); // User bilgisi ile claim üret
+        return Ok(new AuthResponse { Token = token, Email = user.Email, FullName = user.FullName, Role = (int)user.Role });
     }
 
     [HttpPost("login")]
-    [AllowAnonymous]
     public async Task<ActionResult<AuthResponse>> Login([FromBody] LoginRequest req)
     {
-        if (!ModelState.IsValid) return BadRequest(ModelState);
+        var email = req.Email.Trim().ToLowerInvariant();
+        var user = await _db.Users.FirstOrDefaultAsync(x => x.Email == email && x.IsActive);
+        if (user is null) return Unauthorized(new { message = "Invalid credentials." });
 
-        var user = await _db.Users.FirstOrDefaultAsync(u => u.Email == req.Email);
-        if (user is null) return Unauthorized("Geçersiz kimlik bilgileri.");
+        var result = _hasher.VerifyHashedPassword(user, user.PasswordHash, req.Password);
+        if (result == PasswordVerificationResult.SuccessRehashNeeded)
+        {
+            // (opsiyonel) daha iyi algoritma sürümüne rehash
+            user.PasswordHash = _hasher.HashPassword(user, req.Password);
+            await _db.SaveChangesAsync();
+        }
+        else if (result != PasswordVerificationResult.Success)
+        {
+            return Unauthorized(new { message = "Invalid credentials." });
+        }
 
-        if (!PasswordHasher.Verify(req.Password, user.PasswordHash))
-            return Unauthorized("Geçersiz kimlik bilgileri.");
-
-        var token = _tokens.CreateToken(user);
-        return Ok(new AuthResponse(token, user.Id, user.Email, user.Role));
+        var token = _token.CreateToken(user);
+        return Ok(new AuthResponse { Token = token, Email = user.Email, FullName = user.FullName, Role = (int)user.Role });
     }
 }

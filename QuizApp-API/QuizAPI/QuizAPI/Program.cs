@@ -6,6 +6,8 @@ using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using QuizApi.Data;
 using QuizApi.Services;
+using Microsoft.AspNetCore.Identity;
+using QuizApi.Models;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -104,6 +106,7 @@ builder.Services.AddAuthentication(options =>
 builder.Services.AddAuthorization();
 
 // DI
+builder.Services.AddScoped<IPasswordHasher<User>, PasswordHasher<User>>();
 builder.Services.AddScoped<ITokenService, TokenService>();
 
 // CORS: lokal frontend'ler için
