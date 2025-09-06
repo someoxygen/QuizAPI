@@ -1,25 +1,32 @@
-<div *ngIf="loading()">Yükleniyor...</div>
+<!-- src/app/pages/quiz-play/quiz-play.page.html -->
+<ng-container *ngIf="quiz() as q">
+  <mat-card class="play-card">
+    <mat-card-header>
+      <mat-card-title>{{ q.title }}</mat-card-title>
+      <mat-card-subtitle>Soru {{ idx()+1 }} / {{ q.questions?.length }}</mat-card-subtitle>
+    </mat-card-header>
 
-<div *ngIf="quiz() as q">
-  <h2>{{ q.title }}</h2>
+    <mat-progress-bar mode="determinate" [value]="progress()"></mat-progress-bar>
 
-  <ng-container *ngIf="currentQuestion() as cq; else done">
-    <div class="question">
-      <h4>Soru {{ idx()+1 }} / {{ q.questions?.length }}</h4>
-      <p>{{ cq.text }}</p>
+    <mat-card-content *ngIf="currentQuestion() as cq">
+      <h3 class="question">{{ cq.text }}</h3>
 
-      <ul>
-        <li *ngFor="let opt of cq.options" (click)="choose(opt.id)"
-            [class.selected]="selectedOptionId() === opt.id">
+      <div class="options">
+        <button
+          mat-stroked-button
+          class="opt-btn"
+          *ngFor="let opt of cq.options"
+          [color]="selectedOptionId() === opt.id ? 'primary' : undefined"
+          (click)="choose(opt.id)">
           {{ opt.text }}
-        </li>
-      </ul>
+        </button>
+      </div>
+    </mat-card-content>
 
-      <button (click)="next()">{{ idx()+1 < (q.questions?.length || 0) ? 'Sonraki' : 'Bitir' }}</button>
-    </div>
-  </ng-container>
-
-  <ng-template #done>
-    <p>Test tamamlandı, gönderiliyor…</p>
-  </ng-template>
-</div>
+    <mat-card-actions align="end">
+      <button mat-raised-button color="primary" (click)="next()">
+        {{ idx()+1 < (q.questions?.length || 0) ? 'Next' : 'Finish' }}
+      </button>
+    </mat-card-actions>
+  </mat-card>
+</ng-container>

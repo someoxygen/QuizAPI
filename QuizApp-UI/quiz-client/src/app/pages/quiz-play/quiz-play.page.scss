@@ -1,0 +1,8 @@
+/* src/app/pages/quiz-play/quiz-play.page.scss */
+.play-card { max-width: 760px; margin: 0 auto; }
+.question { margin: 16px 0; }
+.options {
+  display: grid; gap: 12px;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+}
+.opt-btn { text-align: left; }

@@ -1,11 +1,23 @@
-<div class="list">
-  <h2>Quizzes</h2>
+<!-- src/app/pages/quiz-list/quiz-list.page.html -->
+<h2>Available Quizzes</h2>
 
-  <div *ngIf="loading()">Yükleniyor...</div>
-  <ul *ngIf="quizzes() as list">
-    <li *ngFor="let q of list">
-      <span>{{ q.title }}</span>
-      <button (click)="play(q)">Başla</button>
-    </li>
-  </ul>
+<div class="center" *ngIf="loading()">
+  <mat-spinner></mat-spinner>
+</div>
+
+<div class="grid" *ngIf="quizzes() as list">
+  <mat-card class="quiz-card" *ngFor="let q of list">
+    <mat-card-header>
+      <mat-card-title>{{ q.title }}</mat-card-title>
+      <mat-card-subtitle>Challenge yourself!</mat-card-subtitle>
+    </mat-card-header>
+    <mat-card-content>
+      <p>Start this quiz and test your knowledge.</p>
+    </mat-card-content>
+    <mat-card-actions>
+      <button mat-raised-button color="primary" (click)="play(q)">
+        <mat-icon>play_arrow</mat-icon> Start
+      </button>
+    </mat-card-actions>
+  </mat-card>
 </div>

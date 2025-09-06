@@ -1,15 +1,25 @@
-<div class="login">
-  <h2>QuizApp Login</h2>
+<!-- src/app/pages/login/login.page.html -->
+<mat-card class="login-card">
+  <h2>Welcome back 👋</h2>
+  <p class="subtitle">Sign in to continue</p>
 
   <form (ngSubmit)="submit()">
-    <label>Kullanıcı Adı</label>
-    <input [(ngModel)]="username" name="username" required />
+    <mat-form-field appearance="outline" class="full">
+      <mat-label>Username</mat-label>
+      <input matInput [(ngModel)]="username" name="username" required>
+      <mat-icon matSuffix>person</mat-icon>
+    </mat-form-field>
 
-    <label>Şifre</label>
-    <input [(ngModel)]="password" type="password" name="password" required />
+    <mat-form-field appearance="outline" class="full">
+      <mat-label>Password</mat-label>
+      <input matInput [type]="hide ? 'password' : 'text'" [(ngModel)]="password" name="password" required>
+      <button mat-icon-button matSuffix type="button" (click)="hide = !hide" [attr.aria-label]="'Hide password'">
+        <mat-icon>{{ hide ? 'visibility_off' : 'visibility' }}</mat-icon>
+      </button>
+    </mat-form-field>
 
-    <button [disabled]="loading()">Giriş Yap</button>
-
-    <p class="error" *ngIf="error()">{{ error() }}</p>
+    <button mat-raised-button color="primary" class="full" [disabled]="loading()">Login</button>
+    <mat-progress-bar *ngIf="loading()" mode="indeterminate"></mat-progress-bar>
+    <div class="error" *ngIf="error()">{{ error() }}</div>
   </form>
-</div>
+</mat-card>

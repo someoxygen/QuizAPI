@@ -1,11 +1,24 @@
-<div *ngIf="result as r">
-  <h2>Sonuç</h2>
-  <p>Doğru: {{ r.correctCount }} / {{ r.total }}</p>
-  <h3>Skor: {{ r.score }}</h3>
+<!-- src/app/pages/result/result.page.html -->
+<mat-card class="result-card" *ngIf="result as r">
+  <mat-card-header>
+    <mat-card-title>Quiz Result</mat-card-title>
+    <mat-card-subtitle>Great job!</mat-card-subtitle>
+  </mat-card-header>
 
-  <a routerLink="/quizzes">Quize geri dön</a>
-</div>
-<div *ngIf="!result">
-  <p>Sonuç verisi bulunamadı.</p>
-  <a routerLink="/quizzes">Geri dön</a>
-</div>
+  <mat-card-content>
+    <p><b>Correct:</b> {{ r.correctCount }} / {{ r.total }}</p>
+    <mat-progress-bar mode="determinate" [value]="r.score"></mat-progress-bar>
+    <h2 class="score">{{ r.score | number:'1.0-0' }}%</h2>
+  </mat-card-content>
+
+  <mat-card-actions>
+    <a mat-stroked-button color="primary" routerLink="/quizzes">Back to Quizzes</a>
+  </mat-card-actions>
+</mat-card>
+
+<mat-card *ngIf="!result">
+  <mat-card-content>Sonuç verisi bulunamadı.</mat-card-content>
+  <mat-card-actions>
+    <a mat-stroked-button routerLink="/quizzes">Geri dön</a>
+  </mat-card-actions>
+</mat-card>

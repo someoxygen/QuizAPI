@@ -1,15 +1,21 @@
+// src/app/pages/quiz-list/quiz-list.page.ts
 import { Component, inject, signal, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { QuizService } from '../../services/quiz.service';
 import { Router } from '@angular/router';
 import { Quiz } from '../../models';
 
+import { MatCardModule } from '@angular/material/card';
+import { MatButtonModule } from '@angular/material/button';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { MatIconModule } from '@angular/material/icon';
+
 @Component({
   standalone: true,
   selector: 'app-quiz-list',
   templateUrl: './quiz-list.page.html',
-  styleUrls: ['./quiz-list.page.css'],
-  imports: [CommonModule]
+  styleUrls: ['./quiz-list.page.scss'],
+  imports: [CommonModule, MatCardModule, MatButtonModule, MatProgressSpinnerModule, MatIconModule]
 })
 export class QuizListPage implements OnInit {
   private qs = inject(QuizService);
@@ -26,7 +32,5 @@ export class QuizListPage implements OnInit {
     });
   }
 
-  play(q: Quiz) {
-    this.router.navigate(['/play', q.id]);
-  }
+  play(q: Quiz) { this.router.navigate(['/play', q.id]); }
 }
