@@ -1,19 +1,33 @@
+// src/app/services/auth.service.ts
 import { Injectable, inject } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpBackend } from '@angular/common/http';
 import { environment } from '../../environments/environment';
 import { LoginRequest, LoginResponse, RegisterRequest } from '../models';
+import { tap } from 'rxjs/operators';
 
 @Injectable({ providedIn: 'root' })
 export class AuthService {
+  // Interceptor'lı normal http (diğer tüm istekler için)
   private http = inject(HttpClient);
+
+  // Interceptor'sız http (sadece auth için)
+  private handler = inject(HttpBackend);
+  private httpNoAuth = new HttpClient(this.handler);
+
   private readonly TOKEN_KEY = 'quiz_token';
 
   register(payload: RegisterRequest) {
-    return this.http.post<{ token: string }>(`${environment.apiUrl}/api/auth/register`, payload);
+    // Interceptor'sız gönder + token'ı otomatik kaydet
+    return this.httpNoAuth
+      .post<LoginResponse>(`${environment.apiUrl}/api/auth/register`, payload)
+      .pipe(tap(res => this.saveToken(res.token)));
   }
-  
+
   login(payload: LoginRequest) {
-    return this.http.post<LoginResponse>(`${environment.apiUrl}/api/auth/login`, payload);
+    // Interceptor'sız gönder + token'ı otomatik kaydet
+    return this.httpNoAuth
+      .post<LoginResponse>(`${environment.apiUrl}/api/auth/login`, payload)
+      .pipe(tap(res => this.saveToken(res.token)));
   }
 
   saveToken(token: string) {

@@ -1,9 +1,8 @@
-// src/app/pages/login/login.page.ts
 import { Component, inject, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { FormsModule } from '@angular/forms';
-import { AuthService } from '../../services/auth.service';
+import { FormsModule, NgForm } from '@angular/forms';
 import { Router } from '@angular/router';
+import { AuthService } from '../../services/auth.service';
 
 import { MatCardModule } from '@angular/material/card';
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -26,16 +25,18 @@ export class LoginPage {
   private auth = inject(AuthService);
   private router = inject(Router);
 
-  hide = true;
-  username = '';
+  email = '';
   password = '';
+  hide = true;
   loading = signal(false);
   error = signal<string | null>(null);
 
-  submit() {
-    this.error.set(null);
+  submit(form: NgForm) {
+    if (!form.valid) return;
     this.loading.set(true);
-    this.auth.login({ username: this.username, password: this.password }).subscribe({
+    this.error.set(null);
+
+    this.auth.login({ email: this.email, password: this.password }).subscribe({
       next: (res) => {
         this.auth.saveToken(res.token);
         this.router.navigate(['/quizzes']);

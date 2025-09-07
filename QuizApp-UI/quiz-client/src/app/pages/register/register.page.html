@@ -4,9 +4,15 @@
 
   <form #f="ngForm" (ngSubmit)="submit(f)">
     <mat-form-field appearance="outline" class="full">
-      <mat-label>Username</mat-label>
-      <input matInput name="username" [(ngModel)]="username" required minlength="3" />
-      <mat-icon matSuffix>person_add</mat-icon>
+      <mat-label>Email</mat-label>
+      <input matInput name="email" [(ngModel)]="email" required email />
+      <mat-icon matSuffix>mail</mat-icon>
+    </mat-form-field>
+
+    <mat-form-field appearance="outline" class="full">
+      <mat-label>Full Name</mat-label>
+      <input matInput name="fullName" [(ngModel)]="fullName" />
+      <mat-icon matSuffix>badge</mat-icon>
     </mat-form-field>
 
     <mat-form-field appearance="outline" class="full">
@@ -25,7 +31,7 @@
       </button>
     </mat-form-field>
 
-    <button mat-raised-button color="primary" class="full" [disabled]="loading()">Create Account</button>
+    <button mat-raised-button color="primary" class="full" [disabled]="loading()">Register</button>
     <mat-progress-bar *ngIf="loading()" mode="indeterminate"></mat-progress-bar>
     <div class="error" *ngIf="error()">{{ error() }}</div>
   </form>

@@ -1,19 +1,18 @@
-<!-- src/app/pages/login/login.page.html -->
 <mat-card class="login-card">
   <h2>Welcome back 👋</h2>
   <p class="subtitle">Sign in to continue</p>
 
-  <form (ngSubmit)="submit()">
+  <form #f="ngForm" (ngSubmit)="submit(f)">
     <mat-form-field appearance="outline" class="full">
-      <mat-label>Username</mat-label>
-      <input matInput [(ngModel)]="username" name="username" required>
-      <mat-icon matSuffix>person</mat-icon>
+      <mat-label>Email</mat-label>
+      <input matInput name="email" [(ngModel)]="email" required email />
+      <mat-icon matSuffix>mail</mat-icon>
     </mat-form-field>
 
     <mat-form-field appearance="outline" class="full">
       <mat-label>Password</mat-label>
-      <input matInput [type]="hide ? 'password' : 'text'" [(ngModel)]="password" name="password" required>
-      <button mat-icon-button matSuffix type="button" (click)="hide = !hide" [attr.aria-label]="'Hide password'">
+      <input matInput [type]="hide ? 'password' : 'text'" name="password" [(ngModel)]="password" required minlength="6" />
+      <button mat-icon-button matSuffix type="button" (click)="hide = !hide">
         <mat-icon>{{ hide ? 'visibility_off' : 'visibility' }}</mat-icon>
       </button>
     </mat-form-field>

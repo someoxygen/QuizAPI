@@ -25,27 +25,27 @@ export class RegisterPage {
   private auth = inject(AuthService);
   private router = inject(Router);
 
-  username = '';
+  email = '';
+  fullName = '';
   password = '';
-  confirm  = '';
+  confirm = '';
   hide1 = true;
   hide2 = true;
   loading = signal(false);
   error = signal<string | null>(null);
 
   submit(form: NgForm) {
-    this.error.set(null);
     if (!form.valid) return;
-
     if (this.password !== this.confirm) {
       this.error.set('Passwords do not match.');
       return;
     }
 
     this.loading.set(true);
-    this.auth.register({ username: this.username, password: this.password }).subscribe({
+    this.error.set(null);
+
+    this.auth.register({ email: this.email, password: this.password, fullName: this.fullName }).subscribe({
       next: (res) => {
-        // çoğu uygulamada auto-login güzel bir deneyim:
         this.auth.saveToken(res.token);
         this.router.navigate(['/quizzes']);
       },

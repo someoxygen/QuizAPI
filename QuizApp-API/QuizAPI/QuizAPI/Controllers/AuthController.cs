@@ -5,6 +5,7 @@ using QuizApi.Data;
 using QuizApi.DTOs;
 using QuizApi.Models;
 using QuizApi.Services;
+using Microsoft.AspNetCore.Authorization;
 
 namespace QuizApi.Controllers;
 
@@ -23,6 +24,7 @@ public class AuthController : ControllerBase
         _token = token;
     }
 
+    [AllowAnonymous]
     [HttpPost("register")]
     public async Task<ActionResult<AuthResponse>> Register([FromBody] RegisterRequest req)
     {
@@ -51,6 +53,7 @@ public class AuthController : ControllerBase
         return Ok(new AuthResponse { Token = token, Email = user.Email, FullName = user.FullName, Role = (int)user.Role });
     }
 
+    [AllowAnonymous]
     [HttpPost("login")]
     public async Task<ActionResult<AuthResponse>> Login([FromBody] LoginRequest req)
     {
