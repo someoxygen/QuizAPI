@@ -1,38 +1,34 @@
-<mat-card class="register-card">
-  <h2>Create an account ✨</h2>
-  <p class="subtitle">Join and start your first quiz</p>
+<mat-card class="glass-card" style="max-width:560px;margin:60px auto;padding:22px">
+  <h2 class="section-title">Create an account ✨</h2>
+  <p style="margin:0 0 18px;color:#6b7280">Join and start your first quiz</p>
 
   <form #f="ngForm" (ngSubmit)="submit(f)">
-    <mat-form-field appearance="outline" class="full">
+    <mat-form-field appearance="fill" class="full">
       <mat-label>Email</mat-label>
-      <input matInput name="email" [(ngModel)]="email" required email />
+      <input matInput name="email" [(ngModel)]="email" required email>
       <mat-icon matSuffix>mail</mat-icon>
     </mat-form-field>
 
-    <mat-form-field appearance="outline" class="full">
+    <mat-form-field appearance="fill" class="full">
       <mat-label>Full Name</mat-label>
-      <input matInput name="fullName" [(ngModel)]="fullName" />
+      <input matInput name="fullName" [(ngModel)]="fullName">
       <mat-icon matSuffix>badge</mat-icon>
     </mat-form-field>
 
-    <mat-form-field appearance="outline" class="full">
+    <mat-form-field appearance="fill" class="full">
       <mat-label>Password</mat-label>
-      <input matInput [type]="hide1 ? 'password' : 'text'" name="password" [(ngModel)]="password" required minlength="6" />
-      <button mat-icon-button matSuffix type="button" (click)="hide1 = !hide1">
-        <mat-icon>{{ hide1 ? 'visibility_off' : 'visibility' }}</mat-icon>
-      </button>
+      <input matInput [type]="hide1?'password':'text'" name="password" [(ngModel)]="password" required minlength="6">
+      <button mat-icon-button matSuffix type="button" (click)="hide1=!hide1"><mat-icon>{{hide1?'visibility_off':'visibility'}}</mat-icon></button>
     </mat-form-field>
 
-    <mat-form-field appearance="outline" class="full">
+    <mat-form-field appearance="fill" class="full">
       <mat-label>Confirm Password</mat-label>
-      <input matInput [type]="hide2 ? 'password' : 'text'" name="confirm" [(ngModel)]="confirm" required minlength="6" />
-      <button mat-icon-button matSuffix type="button" (click)="hide2 = !hide2">
-        <mat-icon>{{ hide2 ? 'visibility_off' : 'visibility' }}</mat-icon>
-      </button>
+      <input matInput [type]="hide2?'password':'text'" name="confirm" [(ngModel)]="confirm" required minlength="6">
+      <button mat-icon-button matSuffix type="button" (click)="hide2=!hide2"><mat-icon>{{hide2?'visibility_off':'visibility'}}</mat-icon></button>
     </mat-form-field>
 
-    <button mat-raised-button color="primary" class="full" [disabled]="loading()">Register</button>
+    <button mat-raised-button color="primary" class="pill" style="width:100%;height:46px;font-weight:700">Register</button>
     <mat-progress-bar *ngIf="loading()" mode="indeterminate"></mat-progress-bar>
-    <div class="error" *ngIf="error()">{{ error() }}</div>
+    <div class="error" *ngIf="error()" style="color:#d32f2f;margin-top:8px">{{ error() }}</div>
   </form>
 </mat-card>

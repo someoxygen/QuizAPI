@@ -1,24 +1,23 @@
-<mat-card class="login-card">
-  <h2>Welcome back 👋</h2>
-  <p class="subtitle">Sign in to continue</p>
+<mat-card class="glass-card" style="max-width:540px;margin:60px auto;padding:22px">
+  <h2 class="section-title">Welcome back <span style="filter:hue-rotate(20deg)">👋</span></h2>
+  <p style="margin:0 0 18px;color:#6b7280">Sign in to continue</p>
 
   <form #f="ngForm" (ngSubmit)="submit(f)">
-    <mat-form-field appearance="outline" class="full">
+    <mat-form-field appearance="fill" class="full">
       <mat-label>Email</mat-label>
-      <input matInput name="email" [(ngModel)]="email" required email />
+      <input matInput name="email" [(ngModel)]="email" required email>
       <mat-icon matSuffix>mail</mat-icon>
+      <mat-hint>example@domain.com</mat-hint>
     </mat-form-field>
 
-    <mat-form-field appearance="outline" class="full">
+    <mat-form-field appearance="fill" class="full">
       <mat-label>Password</mat-label>
-      <input matInput [type]="hide ? 'password' : 'text'" name="password" [(ngModel)]="password" required minlength="6" />
-      <button mat-icon-button matSuffix type="button" (click)="hide = !hide">
-        <mat-icon>{{ hide ? 'visibility_off' : 'visibility' }}</mat-icon>
-      </button>
+      <input matInput [type]="hide ? 'password':'text'" name="password" [(ngModel)]="password" required minlength="6">
+      <button mat-icon-button matSuffix type="button" (click)="hide=!hide"><mat-icon>{{hide?'visibility_off':'visibility'}}</mat-icon></button>
     </mat-form-field>
 
-    <button mat-raised-button color="primary" class="full" [disabled]="loading()">Login</button>
+    <button mat-raised-button color="primary" class="pill" style="width:100%;height:46px;font-weight:700">Login</button>
     <mat-progress-bar *ngIf="loading()" mode="indeterminate"></mat-progress-bar>
-    <div class="error" *ngIf="error()">{{ error() }}</div>
+    <div class="error" *ngIf="error()" style="color:#d32f2f;margin-top:8px">{{ error() }}</div>
   </form>
 </mat-card>

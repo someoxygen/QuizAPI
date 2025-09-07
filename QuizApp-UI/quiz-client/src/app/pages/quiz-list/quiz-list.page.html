@@ -1,23 +1,22 @@
-<!-- src/app/pages/quiz-list/quiz-list.page.html -->
-<h2>Available Quizzes</h2>
+<h2 class="section-title">Available Quizzes</h2>
 
-<div class="center" *ngIf="loading()">
-  <mat-spinner></mat-spinner>
-</div>
-
-<div class="grid" *ngIf="quizzes() as list">
-  <mat-card class="quiz-card" *ngFor="let q of list">
+<div class="grid" *ngIf="quizzes() as list; else loadingTpl">
+  <mat-card class="glass-card quiz-card" *ngFor="let q of list">
     <mat-card-header>
-      <mat-card-title>{{ q.title }}</mat-card-title>
-      <mat-card-subtitle>Challenge yourself!</mat-card-subtitle>
+      <mat-card-title style="font-weight:800">{{ q.title }}</mat-card-title>
+      <mat-card-subtitle>Challenge yourself</mat-card-subtitle>
     </mat-card-header>
     <mat-card-content>
-      <p>Start this quiz and test your knowledge.</p>
+      <p style="color:#6b7280">Start this quiz and test your knowledge.</p>
     </mat-card-content>
-    <mat-card-actions>
-      <button mat-raised-button color="primary" (click)="play(q)">
-        <mat-icon>play_arrow</mat-icon> Start
+    <mat-card-actions align="end">
+      <button mat-raised-button color="accent" class="pill" (click)="play(q)">
+        <mat-icon>play_arrow</mat-icon>&nbsp;Start
       </button>
     </mat-card-actions>
   </mat-card>
 </div>
+
+<ng-template #loadingTpl>
+  <div style="display:flex;justify-content:center;padding:24px"><mat-spinner></mat-spinner></div>
+</ng-template>

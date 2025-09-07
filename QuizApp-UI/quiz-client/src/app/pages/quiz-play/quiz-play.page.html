@@ -1,22 +1,20 @@
-<!-- src/app/pages/quiz-play/quiz-play.page.html -->
 <ng-container *ngIf="quiz() as q">
-  <mat-card class="play-card">
+  <mat-card class="glass-card" style="max-width:820px;margin:10px auto;padding:10px 16px 18px">
     <mat-card-header>
-      <mat-card-title>{{ q.title }}</mat-card-title>
+      <mat-card-title style="font-weight:800">{{ q.title }}</mat-card-title>
       <mat-card-subtitle>Soru {{ idx()+1 }} / {{ q.questions?.length }}</mat-card-subtitle>
     </mat-card-header>
 
     <mat-progress-bar mode="determinate" [value]="progress()"></mat-progress-bar>
 
     <mat-card-content *ngIf="currentQuestion() as cq">
-      <h3 class="question">{{ cq.text }}</h3>
+      <h3 style="margin:16px 0 12px">{{ cq.text }}</h3>
 
       <div class="options">
         <button
-          mat-stroked-button
-          class="opt-btn"
+          mat-stroked-button class="pill opt-btn"
           *ngFor="let opt of cq.options"
-          [color]="selectedOptionId() === opt.id ? 'primary' : undefined"
+          [color]="selectedOptionId()===opt.id ? 'primary' : undefined"
           (click)="choose(opt.id)">
           {{ opt.text }}
         </button>
@@ -24,7 +22,7 @@
     </mat-card-content>
 
     <mat-card-actions align="end">
-      <button mat-raised-button color="primary" (click)="next()">
+      <button mat-raised-button color="primary" class="pill" (click)="next()">
         {{ idx()+1 < (q.questions?.length || 0) ? 'Next' : 'Finish' }}
       </button>
     </mat-card-actions>

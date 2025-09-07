@@ -1,9 +1,9 @@
 /* src/app/pages/quiz-list/quiz-list.page.scss */
 .grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
-  gap: 16px;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 18px;
 }
-.quiz-card { display: flex; flex-direction: column; }
+.quiz-card { display: flex; flex-direction: column; padding-bottom: 8px; }
 .center { display: flex; justify-content: center; padding: 24px; }
 h2 { margin-bottom: 16px; }
