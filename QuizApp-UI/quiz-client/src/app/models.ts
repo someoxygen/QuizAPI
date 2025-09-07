@@ -57,3 +57,41 @@ export interface SubmissionResult {
   total: number;
   score: number; // 0-100
 }
+
+// Enum: backend'deki QuestionType ile aynı isimleri kullan
+export type QuestionType = 'SingleChoice' | 'MultipleChoice'; // gerekiyorsa genişlet
+
+export interface OptionDto {
+  id?: number;
+  text: string;
+  isCorrect: boolean;
+  order: number;
+}
+
+export interface QuestionDto {
+  id?: number;
+  text: string;
+  type: QuestionType;
+  points: number;
+  order: number;
+  options: OptionDto[];
+}
+
+export interface QuizCreateDto {
+  title: string;
+  description?: string | null;
+  timeLimitSeconds?: number | null;
+  isPublished: boolean;
+  questions: QuestionDto[]; // MinLength(1)
+}
+
+export interface QuizResponseDto {
+  id: number;
+  title: string;
+  description?: string | null;
+  isPublished: boolean;
+  timeLimitSeconds?: number | null;
+  createdAt: string;          // ISO date
+  createdByUserId: number;
+  questions: QuestionDto[];
+}

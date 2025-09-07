@@ -1,0 +1,82 @@
+<mat-card class="glass-card" style="max-width:1000px;margin:20px auto;padding:18px">
+  <h2 class="section-title">Create Quiz</h2>
+
+  <form #f="ngForm" (ngSubmit)="submit(f)">
+    <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px">
+      <mat-form-field appearance="fill">
+        <mat-label>Title</mat-label>
+        <input matInput [(ngModel)]="title" name="title" required maxlength="200">
+      </mat-form-field>
+
+      <mat-form-field appearance="fill">
+        <mat-label>Time Limit (seconds)</mat-label>
+        <input matInput type="number" min="0" [(ngModel)]="timeLimitSeconds" name="timeLimitSeconds">
+      </mat-form-field>
+
+      <mat-slide-toggle [(ngModel)]="isPublished" name="isPublished">Published</mat-slide-toggle>
+    </div>
+
+    <mat-form-field appearance="fill" class="full">
+      <mat-label>Description</mat-label>
+      <textarea matInput rows="3" [(ngModel)]="description" name="description" maxlength="2000"></textarea>
+    </mat-form-field>
+
+    <div *ngFor="let q of questions(); let i = index" class="q">
+      <div style="display:flex;align-items:center;gap:10px">
+        <h3 style="margin:8px 0">Question {{ i+1 }}</h3>
+        <button type="button" mat-icon-button color="warn" (click)="removeQuestion(i)"><mat-icon>delete</mat-icon></button>
+      </div>
+
+      <div style="display:grid;grid-template-columns:1fr 180px 120px;gap:12px">
+        <mat-form-field appearance="fill">
+          <mat-label>Question text</mat-label>
+          <input matInput [(ngModel)]="q.text" name="q{{i}}_text" required maxlength="2000">
+        </mat-form-field>
+
+        <mat-form-field appearance="fill">
+          <mat-label>Type</mat-label>
+          <mat-select [(ngModel)]="q.type" name="q{{i}}_type" (selectionChange)="onTypeChange(i)">
+            <mat-option value="SingleChoice">Single Choice</mat-option>
+            <mat-option value="MultipleChoice">Multiple Choice</mat-option>
+          </mat-select>
+        </mat-form-field>
+
+        <mat-form-field appearance="fill">
+          <mat-label>Points</mat-label>
+          <input matInput type="number" min="1" [(ngModel)]="q.points" name="q{{i}}_points">
+        </mat-form-field>
+      </div>
+
+      <div class="opts">
+        <div class="opt" *ngFor="let o of q.options; let j=index">
+          <mat-form-field appearance="fill" class="full">
+            <mat-label>Option {{ j+1 }}</mat-label>
+            <input matInput [(ngModel)]="o.text" name="q{{i}}_o{{j}}" required maxlength="1000">
+            <button mat-icon-button matSuffix type="button"
+                    [color]="o.isCorrect ? 'primary' : undefined"
+                    (click)="markCorrect(i, j, q.type)">
+              <mat-icon>{{ o.isCorrect ? 'check_circle' : 'radio_button_unchecked' }}</mat-icon>
+            </button>
+          </mat-form-field>
+          <button type="button" mat-icon-button color="warn" (click)="removeOption(i,j)"><mat-icon>close</mat-icon></button>
+        </div>
+
+        <button type="button" mat-stroked-button color="primary" class="pill" (click)="addOption(i)">
+          <mat-icon>add</mat-icon>&nbsp;Add option
+        </button>
+      </div>
+
+      <mat-divider></mat-divider>
+    </div>
+
+    <div style="display:flex;gap:10px;margin-top:10px">
+      <button type="button" mat-stroked-button color="primary" class="pill" (click)="addQuestion()">
+        <mat-icon>add</mat-icon>&nbsp;Add question
+      </button>
+      <span style="flex:1"></span>
+      <button mat-raised-button color="primary" class="pill" [disabled]="saving()">Create Quiz</button>
+    </div>
+
+    <div *ngIf="error()" style="color:#d32f2f;margin-top:8px">{{ error() }}</div>
+  </form>
+</mat-card>

@@ -9,9 +9,9 @@ export const authInterceptor: HttpInterceptorFn = (req, next) => {
 
   // /api/auth/... isteklerine dokunma
   const isAuthUrl = /\/api\/auth\/(login|register|refresh)/i.test(req.url);
-
   if (!isAuthUrl && token) {
     req = req.clone({ setHeaders: { Authorization: `Bearer ${token}` } });
+    console.log(req);
   }
   return next(req);
 };

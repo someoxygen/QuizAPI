@@ -18,7 +18,7 @@ import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 
     <mat-slide-toggle (change)="toggleTheme($event.checked)" [checked]="isDark()">Dark</mat-slide-toggle>
     <span style="width:8px"></span>
-
+    <a *ngIf="auth.isAuthenticated() && auth.isAdmin()" mat-stroked-button class="pill" routerLink="/admin/quizzes/new">New Quiz</a>
     <a *ngIf="!auth.isAuthenticated()" mat-stroked-button color="accent" class="pill" routerLink="/login">Login</a>
     <a *ngIf="!auth.isAuthenticated()" mat-raised-button color="accent" class="pill" style="margin-left:8px" routerLink="/register">Register</a>
 
